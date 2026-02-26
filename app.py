@@ -18,6 +18,7 @@ APP_PASSWORD = "OOd5ibqJJvGjtk0U" # Replace with your 16-letter App Password
 
 # MongoDB Connection
 MONGO_URI = "mongodb+srv://midilesh0330_db_user:O0d5ibqJJvgjtk0U@cluster0.fulm0s5.mongodb.net/university_system?retryWrites=true&w=majority&tlsAllowInvalidCertificates=true"
+
 try:
     client = MongoClient(MONGO_URI)
     db = client['university_system']
@@ -114,22 +115,6 @@ model = MultinomialNB()
 model.fit(X, departments_labels)
 print("Model Trained Successfully.")
 
-def send_email_func(to_email, subject, body):
-    try:
-        msg = EmailMessage()
-        msg["From"] = SENDER_EMAIL
-        msg["To"] = to_email
-        msg["Subject"] = subject
-        msg.set_content(body)
-
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-            server.login(SENDER_EMAIL, APP_PASSWORD)
-            server.send_message(msg)
-        return True
-    except Exception as e:
-        print(f"Email Error: {e}")
-        return False
-
 # -------------------------------------------------
 # WEB ROUTES
 # -------------------------------------------------
@@ -181,9 +166,9 @@ def submit_request():
     except Exception as e:
         print(f"Failed to save to MongoDB: {e}")
 
-    # Send Email to Student
-    student_body = f"Dear {r_name},\n\nYour request '{r_desc}' has been successfully received.\nIt has been routed to the {primary_dept} department.\n\nReference ID: {r_id}"
-    send_email_func(r_email, "Request Received - University System", student_body)
+    # Email function is temporarily disabled to prevent Render server crashes
+    # student_body = f"Dear {r_name},\n\nYour request '{r_desc}' has been successfully received.\nIt has been routed to the {primary_dept} department.\n\nReference ID: {r_id}"
+    # send_email_func(r_email, "Request Received - University System", student_body)
 
     return jsonify({
         "status": "success", 
@@ -192,7 +177,4 @@ def submit_request():
 
 # Render uses Gunicorn in production, but this is for local testing
 if __name__ == '__main__':
-
     app.run(debug=True, port=5000)
-
-
