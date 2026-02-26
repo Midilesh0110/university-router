@@ -17,7 +17,7 @@ SENDER_EMAIL = "nihalvarma4687@gmail.com"
 APP_PASSWORD = "OOd5ibqJJvGjtk0U" # Replace with your 16-letter App Password
 
 # MongoDB Connection
-MONGO_URI = "mongodb+srv://midilesh0330_db_user:OOd5ibqJJvGjtk0U@cluster0.fulm0s5.mongodb.net/?appName=Cluster0" # Replace with your Atlas connection string
+MONGO_URI = "mongodb+srv://midilesh0330_db_user:O0d5ibqJJvgjtk0U@cluster0.fulm0s5.mongodb.net/?appName=Cluster0&tlsAllowInvalidCertificates=true"
 try:
     client = MongoClient(MONGO_URI)
     db = client['university_system']
@@ -192,4 +192,5 @@ def submit_request():
 
 # Render uses Gunicorn in production, but this is for local testing
 if __name__ == '__main__':
+
     app.run(debug=True, port=5000)
