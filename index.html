@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligent Request Routing System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e9ecef;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            background-color: #f8f9fa;
+            width: 700px;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            border: 1px solid #ddd;
+            position: relative;
+        }
+
+        .form-header {
+            background: linear-gradient(to right, #6a3093, #a044ff, #d6336c); 
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .form-header h2 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        /* --- Slider Container Styles --- */
+        .slider-wrapper {
+            overflow: hidden; 
+            width: 100%;
+        }
+
+        .slider-track {
+            display: flex;
+            width: 200%; 
+            transition: transform 0.5s ease-in-out; 
+        }
+
+        .slide {
+            width: 50%; 
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        /* --- Form Styles --- */
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+
+        .form-group label {
+            width: 180px;
+            font-size: 14px;
+            color: #333;
+            padding-top: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            flex-grow: 1;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+            background-color: transparent;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #a044ff;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        textarea::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-start;
+            padding-left: 180px;
+            margin-top: 20px;
+        }
+
+        .submit-btn, .new-request-btn {
+            background-color: #8b5a96;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .submit-btn:hover:not(:disabled), .new-request-btn:hover {
+            background-color: #6a3093;
+        }
+
+        .submit-btn:disabled {
+            background-color: #bfa1c7;
+            cursor: not-allowed;
+        }
+
+        /* --- Success Message Styles --- */
+        .success-slide {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 350px; 
+        }
+
+        .success-icon {
+            font-size: 50px;
+            color: #28a745; 
+            margin-bottom: 15px;
+        }
+
+        .success-slide h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .success-slide p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <div class="form-header">
+            <h2>Intelligent Request Routing and Management System</h2>
+        </div>
+        
+        <div class="slider-wrapper">
+            <div class="slider-track" id="sliderTrack">
+                
+                <div class="slide form-slide">
+                    <div class="section-title">Student Request Details</div>
+                    
+                    <form id="requestForm">
+                        <div class="form-group">
+                            <label for="name">Name :</label>
+                            <input type="text" id="name" name="name" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="studentId">Student ID :</label>
+                            <input type="text" id="studentId" name="studentId" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Student Email :</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="department">Department :</label>
+                            <input type="text" id="department" name="department" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="classYear">Class / Year :</label>
+                            <input type="text" id="classYear" name="classYear" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="description">Request Description :</label>
+                            <textarea id="description" name="description" class="form-control" placeholder="Describe your issue clearly" required></textarea>
+                        </div>
+                        
+                        <div class="button-container">
+                            <button type="submit" class="submit-btn" id="submitBtn">Submit Request</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="slide success-slide">
+                    <div class="success-icon">✓</div>
+                    <h3>Submission Successful!</h3>
+                    <p>Your request has been securely routed to the designated department.</p>
+                    <button type="button" id="newRequestBtn" class="new-request-btn">File a New Request</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const requestForm = document.getElementById('requestForm');
+        const sliderTrack = document.getElementById('sliderTrack');
+        const newRequestBtn = document.getElementById('newRequestBtn');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Handle Form Submission
+        requestForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Stop default page reload
+            
+            // UI Update: Show loading state
+            const originalBtnText = submitBtn.innerText;
+            submitBtn.innerText = "Processing...";
+            submitBtn.disabled = true;
+
+            // Gather data from the form
+            const formData = new FormData(requestForm);
+            const data = Object.fromEntries(formData.entries());
+
+            // Send data to the Python Backend
+           fetch('/submit_request', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(result => {
+                console.log("Success:", result);
+                // Slide to the success message
+                sliderTrack.style.transform = 'translateX(-50%)';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Error connecting to the server. Please ensure your Python backend (app.py) is running.");
+            })
+            .finally(() => {
+                // Reset button UI
+                submitBtn.innerText = originalBtnText;
+                submitBtn.disabled = false;
+            });
+        });
+
+        // Handle 'File a New Request' button click
+        newRequestBtn.addEventListener('click', function() {
+            requestForm.reset();
+            sliderTrack.style.transform = 'translateX(0)';
+        });
+    </script>
+
+</body>
+</html>
